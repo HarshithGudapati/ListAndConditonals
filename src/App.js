@@ -1,9 +1,6 @@
 import React, { useState, Component } from 'react';
 import Person from './Person/Person.js';
-import radium from 'radium';
 import './App.css';
-import { render } from 'react-dom';
-import Radium from 'radium';
 
 class App extends Component {
   state = {
@@ -83,6 +80,7 @@ class App extends Component {
       classes.push('bold');
     }
     return (
+     
       <div className="App">
         <h1>Hi,I'm React App</h1>
         <p className={classes.join(' ')}>This is really working</p>
@@ -91,8 +89,9 @@ class App extends Component {
           onClick={this.togglePersonsHandler}>Switch Name</button>
         {persons}
       </div>
+     
     );
   }
 }
 
-export default Radium(App);
+export default App;
