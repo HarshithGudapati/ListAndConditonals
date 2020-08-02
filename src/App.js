@@ -1,23 +1,7 @@
 import React, { useState, Component } from 'react';
 import Person from './Person/Person.js';
-import styled from 'styled-components';
-
-import './App.css';
-
-const StyledButton = styled.button`
-background-color: ${props => props.alt ? 'red': 'green'};
-           color:white;
-         font: inherit;
-border: 1px solid blue;
-          padding: 8px;
-       cursor: pointer;
-
-&:hover {
-  background-color: ${props => props.alt ? 'salmon': 'lightgreen'};
-  color:black;
-}
-`;
-
+import classes from './App.css';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary.js'
 class App extends Component {
   state = {
     persons: [
@@ -44,59 +28,55 @@ class App extends Component {
     person.name = event.target.value;
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-
-    this.setState({persons: persons});
+    this.setState({ persons: persons });
   }
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({ showPersons: !doesShow })
   }
   render() {
-    
+
     let persons = null;
+    let btnClass = '';
     if (this.state.showPersons) {
       persons = (
         <div>
-          
+
           {this.state.persons.map((person, index) => {
-            return <Person
+            return <ErrorBoundary key={person.id}>
+            <Person
               click={() => this.deletePersonHandler(index)}
               name={person.name}
               age={person.age}
-              key={person.id}
-              changed={(event) => this.nameChangeHandler(event,person.id)} />
+              
+              changed={(event) => this.nameChangeHandler(event, person.id)} />
+              </ErrorBoundary>
           })
           }
         </div>
       );
-      // style.backgroundColor='red';
-      // style[':hover']={
-      //   backgroundColor:'salmon',
-      //   color:'black'
-      // }
+      btnClass = classes.Red;
     }
-
     //let classes =['red','bold'].join(' ')
-    const classes =[];
-    if(this.state.persons.length<=2){
-      classes.push('red');
+    const assignedClasses = [];
+    if (this.state.persons.length <= 2) {
+      assignedClasses.push(classes.red);
     }
-    if(this.state.persons.length<=1){
-      classes.push('bold');
+    if (this.state.persons.length <= 1) {
+      assignedClasses.push(classes.bold);
     }
     return (
-     
-      <div className="App">
+
+      <div className={classes.App}>
         <h1>Hi,I'm React App</h1>
-        <p className={classes.join(' ')}>This is really working</p>
-        <StyledButton
-          alt={this.state.showPersons}          
-          onClick={this.togglePersonsHandler}>Toggle Persons</StyledButton>
+        <p className={assignedClasses.join(' ')}>This is really working</p>
+        <button
+          className={btnClass}
+          onClick={this.togglePersonsHandler}>Toggle Persons</button>
         {persons}
       </div>
-     
+
     );
   }
 }
-
 export default App;
